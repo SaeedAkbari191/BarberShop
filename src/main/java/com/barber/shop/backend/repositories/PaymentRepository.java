@@ -10,12 +10,5 @@ import org.springframework.data.repository.query.Param;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
-    List<Payment> findByAppointmentId(Long appointmentId);
 
-    List<Payment> findByPaidAtBetween(LocalDateTime start, LocalDateTime end);
-
-    void deleteByAppointmentId(Long appointmentId);
-
-    @Query("select coalesce(sum(p.amount), 0) from Payment p where p.appointment.id = :appointmentId and p.paymentStatus <> com.barber.shop.backend.enums.PaymentStatus.VOID")
-    BigDecimal sumPaidAmountByAppointmentId(@Param("appointmentId") Long appointmentId);
 }

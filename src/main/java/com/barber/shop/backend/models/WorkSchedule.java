@@ -2,24 +2,15 @@ package com.barber.shop.backend.models;
 
 import com.barber.shop.backend.enums.WorkScheduleStatus;
 import com.barber.shop.backend.enums.WorkScheduleType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 import lombok.*;
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -28,7 +19,9 @@ import org.hibernate.annotations.DynamicUpdate;
 @AllArgsConstructor
 @Entity
 @DynamicUpdate
-@Check(constraints = "end_time > start_time")
+@Check(constraints = "end_time > start_time AND " +
+        "(break_start_time IS NULL OR break_end_time IS NULL OR " +
+        "(break_end_time > break_start_time AND break_start_time > start_time AND break_end_time < end_time))")
 @Table(
         name = "work_schedules",
         indexes = {
@@ -77,4 +70,7 @@ public class WorkSchedule extends BaseEntity {
     @Size(max = 500)
     @Column(name = "notes", length = 500)
     private String notes;
+
+    @Column(name = "is_off", nullable = false)
+    private Boolean isOff = false;
 }

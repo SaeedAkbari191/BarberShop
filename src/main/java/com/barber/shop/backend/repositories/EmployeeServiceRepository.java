@@ -7,11 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EmployeeServiceRepository extends JpaRepository<EmployeeService, Long> {
 
-    List<EmployeeService> findByEmployeeId(Long employeeId);
 
-    List<EmployeeService> findByServiceId(Long serviceId);
-
-    Optional<EmployeeService> findByEmployeeIdAndServiceId(Long employeeId, Long serviceId);
-
-    boolean existsByEmployeeIdAndServiceId(Long employeeId, Long serviceId);
 }

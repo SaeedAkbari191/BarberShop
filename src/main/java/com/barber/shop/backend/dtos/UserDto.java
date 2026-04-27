@@ -2,11 +2,8 @@ package com.barber.shop.backend.dtos;
 
 import com.barber.shop.backend.enums.UserStatus;
 import com.barber.shop.backend.utils.ValidationPatterns;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDateTime;
 
 public record UserDto(

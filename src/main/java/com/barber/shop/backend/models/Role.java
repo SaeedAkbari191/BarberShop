@@ -42,10 +42,10 @@ public class Role extends BaseEntity {
     @Column(name = "code", nullable = false, length = 50)
     private RoleCode code;
 
-    @NotBlank
-    @Size(max = 100)
-    @Column(name = "name", nullable = false, length = 100)
-    private String name;
+//    @NotBlank
+//    @Size(max = 100)
+//    @Column(name = "name", nullable = false, length = 100)
+//    private String name;
 
     @Size(max = 255)
     @Column(name = "description")

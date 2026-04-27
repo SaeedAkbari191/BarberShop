@@ -3,34 +3,18 @@ package com.barber.shop.backend.models;
 import com.barber.shop.backend.enums.AppointmentStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OrderBy;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import lombok.*;
-import org.hibernate.annotations.Check;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Getter
 @Setter
@@ -38,10 +22,6 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @Builder
 @AllArgsConstructor
-@DynamicUpdate
-@Check(constraints = "end_time > start_time")
-@SQLDelete(sql = "UPDATE appointments SET is_deleted = true, deleted_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP, version = version + 1 WHERE id = ? AND version = ?")
-@SQLRestriction("is_deleted = false")
 @Table(
         name = "appointments",
         uniqueConstraints = {
@@ -49,8 +29,6 @@ import org.hibernate.annotations.SQLRestriction;
         },
         indexes = {
                 @Index(name = "idx_appointments_customer", columnList = "customer_id"),
-                @Index(name = "idx_appointments_employee_date", columnList = "assigned_employee_id, appointment_date"),
-                @Index(name = "idx_appointments_date_time", columnList = "appointment_date, start_time"),
                 @Index(name = "idx_appointments_status", columnList = "status"),
                 @Index(name = "idx_appointments_booked_by", columnList = "booked_by_user_id"),
                 @Index(name = "idx_appointments_deleted", columnList = "is_deleted")
@@ -76,23 +54,11 @@ public class Appointment extends SoftDeletableEntity {
             foreignKey = @jakarta.persistence.ForeignKey(name = "fk_appointments_booked_by"))
     private User bookedByUser;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "assigned_employee_id",
-            foreignKey = @jakarta.persistence.ForeignKey(name = "fk_appointments_employee"))
-    private Employee assignedEmployee;
 
     @NotNull
     @Column(name = "appointment_date", nullable = false)
     private LocalDate appointmentDate;
 
-    @NotNull
-    @Column(name = "start_time", nullable = false)
-    private LocalTime startTime;
-
-    @NotNull
-    @Column(name = "end_time", nullable = false)
-    private LocalTime endTime;
 
     @NotNull
     @Enumerated(EnumType.STRING)

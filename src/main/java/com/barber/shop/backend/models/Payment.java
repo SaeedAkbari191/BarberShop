@@ -2,25 +2,15 @@ package com.barber.shop.backend.models;
 
 import com.barber.shop.backend.enums.PaymentMethod;
 import com.barber.shop.backend.enums.PaymentStatus;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -31,8 +21,14 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 @Table(
         name = "payments",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_payments_appointment_service",
+                        columnNames = "appointment_service_id"
+                )
+        },
         indexes = {
-                @Index(name = "idx_payments_appointment", columnList = "appointment_id"),
+                @Index(name = "idx_payments_service", columnList = "appointment_service_id"),
                 @Index(name = "idx_payments_method", columnList = "payment_method"),
                 @Index(name = "idx_payments_status", columnList = "payment_status"),
                 @Index(name = "idx_payments_paid_at", columnList = "paid_at"),
@@ -41,18 +37,16 @@ import org.hibernate.annotations.DynamicUpdate;
 )
 public class Payment extends BaseEntity {
 
-    @JsonBackReference("appointment-payments")
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "appointment_id", nullable = false,
-            foreignKey = @jakarta.persistence.ForeignKey(name = "fk_payments_appointment"))
-    private Appointment appointment;
+    @JoinColumn(name = "appointment_service_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_payments_appointment_service"))
+    private AppointmentService appointmentService;
 
-    @JsonIgnore
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "received_by_user_id", nullable = false,
-            foreignKey = @jakarta.persistence.ForeignKey(name = "fk_payments_received_by"))
+            foreignKey = @ForeignKey(name = "fk_payments_received_by"))
     private User receivedByUser;
 
     @NotNull
@@ -63,10 +57,10 @@ public class Payment extends BaseEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_status", nullable = false, length = 30)
-    private PaymentStatus paymentStatus = PaymentStatus.PAID;
+    private PaymentStatus paymentStatus;
 
     @NotNull
-    @DecimalMin(value = "0.01")
+    @DecimalMin("0.01")
     @Column(name = "amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
 
