@@ -27,63 +27,40 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import com.barber.shop.backend.utils.ValidationPatterns;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Builder
 @AllArgsConstructor
-@Entity
-@Table(
-        name = "users",
+@Builder
+@DynamicUpdate
+@SQLDelete(sql = "UPDATE users SET is_deleted = true, deleted_at = CURRENT_TIMESTAMP WHERE id=?")
+@SQLRestriction("is_deleted = false")
+@Table(name = "users",
         uniqueConstraints = {
                 @UniqueConstraint(name = "uk_users_username", columnNames = "username"),
                 @UniqueConstraint(name = "uk_users_email", columnNames = "email")
-        },
-        indexes = {
-                @Index(name = "idx_users_role_id", columnList = "role_id"),
-                @Index(name = "idx_users_status", columnList = "status"),
-                @Index(name = "idx_users_deleted", columnList = "is_deleted")
-        }
-)
+        })
 public class User extends SoftDeletableEntity {
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "role_id", nullable = false,
-            foreignKey = @jakarta.persistence.ForeignKey(name = "fk_users_role"))
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
-    @NotBlank
-    @Size(max = 100)
-    @Column(name = "username", nullable = false, length = 100,unique = true)
+    @Column(nullable = false, length = 100)
     private String username;
 
-    @NotBlank
-    @Email
-    @Size(max = 150)
-    @Column(name = "email", nullable = false, length = 150)
+    @Column(nullable = false, length = 150)
     private String email;
 
     @JsonIgnore
-    @NotBlank
-    @Size(max = 255)
-    @Column(name = "password_hash", nullable = false, length = 255)
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @Pattern(regexp = ValidationPatterns.PHONE)
-    @Size(max = 30)
-    @Column(name = "phone", length = 30)
+    @Column(length = 30)
     private String phone;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, length = 30)
+    @Column(nullable = false, length = 30)
     private UserStatus status = UserStatus.ACTIVE;
-
-    @Column(name = "last_login_at")
-    private LocalDateTime lastLoginAt;
-
-    @JsonManagedReference("user-employee")
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-    private Employee employee;
 }

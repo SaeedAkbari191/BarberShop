@@ -12,7 +12,6 @@ public record UserResponseDto(
         String email,
         String phone,
         UserStatus status,
-        LocalDateTime lastLoginAt,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

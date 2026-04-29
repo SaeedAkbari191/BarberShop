@@ -25,72 +25,40 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import com.barber.shop.backend.utils.ValidationPatterns;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Builder
 @AllArgsConstructor
-@Entity
+@Builder
 @DynamicUpdate
-@SQLDelete(sql = "UPDATE customers SET is_deleted = true, deleted_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP, version = version + 1 WHERE id = ? AND version = ?")
+@SQLDelete(sql = "UPDATE customers SET is_deleted = true, deleted_at = CURRENT_TIMESTAMP WHERE id=?")
 @SQLRestriction("is_deleted = false")
-@Table(
-        name = "customers",
-        uniqueConstraints = {
-                @UniqueConstraint(name = "uk_customers_code", columnNames = "customer_code"),
-                @UniqueConstraint(name = "uk_customers_phone", columnNames = "phone")
-        },
-        indexes = {
-                @Index(name = "idx_customers_name", columnList = "last_name, first_name"),
-                @Index(name = "idx_customers_deleted", columnList = "is_deleted"),
-                @Index(name = "idx_customers_last_visit", columnList = "last_visit_at"),
-                @Index(name = "idx_customers_email", columnList = "email")
-        }
-)
+@Table(name = "customers")
 public class Customer extends SoftDeletableEntity {
 
-    @NotBlank
-    @Size(max = 50)
-    @Column(name = "customer_code", nullable = false, length = 50)
+    @Column(name = "customer_code", nullable = false, unique = true)
     private String customerCode;
 
-    @NotBlank
-    @Size(max = 100)
-    @Column(name = "first_name", nullable = false, length = 100)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Size(max = 100)
-    @Column(name = "last_name", length = 100)
     private String lastName;
 
-    @NotBlank
-    @Pattern(regexp = ValidationPatterns.PHONE)
-    @Size(max = 30)
-    @Column(name = "phone", nullable = false, length = 30)
+    @Column(nullable = false)
     private String phone;
 
-    @Email
-    @Size(max = 150)
-    @Column(name = "email", length = 150)
     private String email;
 
-    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "gender", length = 20)
     private Gender gender;
 
-    @Column(name = "notes", columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String notes;
 
     @Column(name = "marketing_opt_in", nullable = false)
-    private Boolean marketingOptIn = Boolean.FALSE;
+    private Boolean marketingOptIn = false;
 
-    @Column(name = "last_visit_at")
-    private LocalDateTime lastVisitAt;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "customer")
-    private List<Appointment> appointments = new ArrayList<>();
 }

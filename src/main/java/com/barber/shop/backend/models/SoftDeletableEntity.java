@@ -8,9 +8,6 @@ import lombok.*;
 
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @MappedSuperclass
 public abstract class SoftDeletableEntity extends BaseEntity {
 
@@ -21,7 +18,7 @@ public abstract class SoftDeletableEntity extends BaseEntity {
     private LocalDateTime deletedAt;
 
     public void markDeleted() {
-        this.isDeleted = Boolean.TRUE;
+        this.isDeleted = true;
         this.deletedAt = LocalDateTime.now();
     }
 }

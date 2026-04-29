@@ -13,11 +13,4 @@ import org.springframework.data.repository.query.Param;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    Optional<Appointment> findByAppointmentNumber(String appointmentNumber);
-
-    List<Appointment> findByCustomerId(Long customerId);
-
-    List<Appointment> findByAssignedEmployeeIdAndAppointmentDate(Long employeeId, LocalDate appointmentDate);
-
-
 }

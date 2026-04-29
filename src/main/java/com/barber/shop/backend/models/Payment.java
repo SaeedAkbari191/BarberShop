@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @Entity
-@DynamicUpdate
 @Table(
         name = "payments",
         uniqueConstraints = {

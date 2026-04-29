@@ -1,15 +1,13 @@
 package com.barber.shop.backend.models;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @MappedSuperclass
 public abstract class BaseEntity {
 
@@ -24,18 +22,18 @@ public abstract class BaseEntity {
     private LocalDateTime updatedAt;
 
     @Version
-    @Column(name = "version", nullable = false)
+    @Column(nullable = false)
     private Long version = 0L;
 
     @PrePersist
     protected void onCreate() {
         LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
+        createdAt = now;
+        updatedAt = now;
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 }

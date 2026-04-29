@@ -12,65 +12,36 @@ import org.hibernate.annotations.DynamicUpdate;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Builder
 @AllArgsConstructor
-@Entity
-@DynamicUpdate
-@Check(constraints = "end_time > start_time AND " +
-        "(break_start_time IS NULL OR break_end_time IS NULL OR " +
-        "(break_end_time > break_start_time AND break_start_time > start_time AND break_end_time < end_time))")
-@Table(
-        name = "work_schedules",
-        indexes = {
-                @Index(name = "idx_work_schedules_employee_date", columnList = "employee_id, schedule_date"),
-                @Index(name = "idx_work_schedules_date", columnList = "schedule_date"),
-                @Index(name = "idx_work_schedules_type", columnList = "schedule_type"),
-                @Index(name = "idx_work_schedules_status", columnList = "status")
-        }
-)
+@Builder
+@Table(name = "work_schedules")
 public class WorkSchedule extends BaseEntity {
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "employee_id", nullable = false,
-            foreignKey = @jakarta.persistence.ForeignKey(name = "fk_work_schedules_employee"))
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
-    @NotNull
-    @Column(name = "schedule_date", nullable = false)
     private LocalDate scheduleDate;
 
-    @NotNull
-    @Column(name = "start_time", nullable = false)
     private LocalTime startTime;
 
-    @NotNull
-    @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
 
-    @Column(name = "break_start_time")
     private LocalTime breakStartTime;
 
-    @Column(name = "break_end_time")
     private LocalTime breakEndTime;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "schedule_type", nullable = false, length = 30)
-    private WorkScheduleType scheduleType = WorkScheduleType.WORKING;
+    private WorkScheduleType scheduleType;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, length = 30)
-    private WorkScheduleStatus status = WorkScheduleStatus.ACTIVE;
+    private WorkScheduleStatus status;
 
-    @Size(max = 500)
-    @Column(name = "notes", length = 500)
     private String notes;
 
-    @Column(name = "is_off", nullable = false)
     private Boolean isOff = false;
 }
