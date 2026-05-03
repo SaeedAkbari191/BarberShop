@@ -24,7 +24,7 @@ public class JwtUtils {
      * مثال: 15 دقیقه
      */
 
-    private final long accessTokenExpirationMs = 1000 * 60 * 3;
+    private final long accessTokenExpirationMs = 1000 * 60 * 7;
 
     /**
      * Refresh Token:

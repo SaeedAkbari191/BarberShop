@@ -6,6 +6,7 @@ import com.barber.shop.backend.dtos.user.UserCreateDto;
 import com.barber.shop.backend.dtos.user.UserResponseDto;
 import com.barber.shop.backend.service.UserService;
 import com.barber.shop.backend.service.impl.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginRequestDto dto) {
-        return ResponseEntity.ok(authService.login(dto));
+    public ResponseEntity<AuthResponseDto> login(
+            @RequestBody LoginRequestDto dto,
+            HttpServletRequest request
+    ) {
+        return ResponseEntity.ok(authService.login(dto, request));
     }
 }

@@ -21,4 +21,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     WHERE u.username = :username
 """)
     Optional<User> findByUsernameWithRole(String username);
+
+    Optional<User> findActiveUserById(Long id);
 }
