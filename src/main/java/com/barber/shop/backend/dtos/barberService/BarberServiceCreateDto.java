@@ -25,6 +25,8 @@ public record BarberServiceCreateDto(
 
         @NotNull
         @Positive
-        Integer durationMinutes
+        Integer durationMinutes,
+
+        Boolean isActive
 ) {
 }

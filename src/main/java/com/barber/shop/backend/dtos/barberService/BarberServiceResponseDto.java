@@ -13,9 +13,8 @@ public record BarberServiceResponseDto(
         BigDecimal basePrice,
         Integer durationMinutes,
         Boolean isActive,
-        Boolean isDeleted,
-        LocalDateTime deletedAt,
-
+//        Boolean isDeleted,
+//        LocalDateTime deletedAt,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

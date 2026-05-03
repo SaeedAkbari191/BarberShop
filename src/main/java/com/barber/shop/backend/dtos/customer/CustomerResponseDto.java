@@ -16,7 +16,7 @@ public record CustomerResponseDto(
         Gender gender,
         String notes,
         Boolean marketingOptIn,
-        LocalDateTime lastVisitAt,
+//        LocalDateTime lastVisitAt,
         LocalDateTime createdAt
 ) {
 }

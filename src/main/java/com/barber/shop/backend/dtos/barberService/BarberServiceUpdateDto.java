@@ -1,15 +1,17 @@
 package com.barber.shop.backend.dtos.barberService;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
 public record BarberServiceUpdateDto(
 
-        @NotNull
+
         Long version,
 
-        @NotBlank
+
         @Size(max = 150)
         String name,
 
@@ -19,11 +21,11 @@ public record BarberServiceUpdateDto(
         @Size(max = 500)
         String description,
 
-        @NotNull
+
         @DecimalMin("0.00")
         BigDecimal basePrice,
 
-        @NotNull
+
         @Positive
         Integer durationMinutes,
 

@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -97,8 +96,9 @@ public class UserServiceImpl implements UserService {
 
         User user = findActiveUserById(id);
 
-        user.setIsDeleted(true);
-        user.setDeletedAt(LocalDateTime.now());
+//        user.setIsDeleted(true);
+//        user.setDeletedAt(LocalDateTime.now());
+        user.markDeleted();
 
         userRepository.save(user);
     }
