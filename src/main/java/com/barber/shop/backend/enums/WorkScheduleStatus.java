@@ -1,6 +1,8 @@
 package com.barber.shop.backend.enums;
 
 public enum WorkScheduleStatus {
-    ACTIVE,
-    CANCELLED
+    PLANNED,     // آینده
+    ACTIVE,      // امروز (در حال اجرا)
+    COMPLETED,   // گذشته
+    CANCELLED    // کنسل شده
 }

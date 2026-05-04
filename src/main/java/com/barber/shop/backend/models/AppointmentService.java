@@ -28,6 +28,14 @@ public class AppointmentService extends BaseEntity {
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
+    // ✅ مهم‌ترین بخش سیستم
+    @Column(nullable = false)
+    private LocalDateTime startTime;
+
+    @Column(nullable = false)
+    private LocalDateTime endTime;
+
+    // ✅ snapshot (برای جلوگیری از تغییر آینده)
     private String serviceNameSnapshot;
 
     private BigDecimal priceSnapshot;
@@ -40,7 +48,4 @@ public class AppointmentService extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private AppointmentServiceStatus status;
-
-    private LocalDateTime startedAt;
-
 }
