@@ -1,6 +1,7 @@
 package com.barber.shop.backend.dtos.employee;
 
 import com.barber.shop.backend.enums.CommissionType;
+import com.barber.shop.backend.enums.EmploymentStatus;
 import com.barber.shop.backend.enums.Gender;
 import com.barber.shop.backend.utils.ValidationPatterns;
 import jakarta.validation.constraints.NotBlank;
@@ -36,6 +37,8 @@ public record EmployeeCreateDto (
 
         @NotNull
         LocalDate hireDate,
+
+        EmploymentStatus employmentStatus,
 
         CommissionType commissionType,
         BigDecimal commissionValue,

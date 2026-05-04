@@ -1,9 +1,12 @@
 package com.barber.shop.backend.repositories;
 
 import com.barber.shop.backend.models.Employee;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+import java.util.Optional;
 
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+    boolean existsByEmployeeCode(String employeeCode);
+
+    Optional<Employee> findByEmployeeCode(String employeeCode);
 }
