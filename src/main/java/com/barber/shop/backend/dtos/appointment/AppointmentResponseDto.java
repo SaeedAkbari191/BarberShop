@@ -31,6 +31,6 @@ public record AppointmentResponseDto(
         String cancellationReason,
         LocalDateTime cancelledAt,
 
-        List<AppointmentServiceResponseDto> services
+        List<AppointmentServiceViewDto> services
 
 ) {}

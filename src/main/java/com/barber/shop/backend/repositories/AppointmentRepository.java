@@ -1,16 +1,23 @@
 package com.barber.shop.backend.repositories;
 
-import com.barber.shop.backend.enums.AppointmentStatus;
 import com.barber.shop.backend.models.Appointment;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+
+import java.time.LocalDateTime;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
+
+//    boolean existsOverlap(Long employeeId, LocalDateTime start, LocalDateTime end);
+
+    @Query("""
+            SELECT COUNT(a) > 0
+            FROM AppointmentService a
+            WHERE a.employee.id = :employeeId
+            AND a.startTime < :end
+            AND a.endTime > :start
+            """)
+    boolean existsOverlap(Long employeeId, LocalDateTime start, LocalDateTime end);
+
 
 }

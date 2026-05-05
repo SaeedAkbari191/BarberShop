@@ -19,7 +19,8 @@ public record AppointmentCreateRequestDto(
 
         @NotNull
         @Size(min = 1)
-        List<AppointmentServiceCreateDto> services,
+        List<AppointmentServiceItemDto> services,
 
         String notes
+
 ) {}
